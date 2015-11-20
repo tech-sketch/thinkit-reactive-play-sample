@@ -1,0 +1,19 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index
+
+GET     /sample/eventSearch/                                                                controllers.sample.EventSearch.index
+GET     /sample/eventSearch/search1/                                                        controllers.sample.EventSearch.search1
+GET     /sample/eventSearch/search2/                                                        controllers.sample.EventSearch.search2
+GET     /sample/eventSearch/ws/                                                             controllers.sample.EventSearch.ws
+
+GET     /sample/eventSearch/hi/                                                             controllers.sample.EventSearch.hi
+GET     /sample/eventSearch/hello/                                                          controllers.sample.EventSearch.hello
+GET     /sample/eventSearch/others/                                                         controllers.sample.EventSearch.others
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

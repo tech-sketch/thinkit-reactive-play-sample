@@ -1,0 +1,70 @@
+@(events: Seq[models.Tables.EventRow])(implicit flash: Flash, messages: Messages)
+
+@import BootstrapHelper._
+
+@main("EventSearch") {
+  <script language="javascript" type="text/javascript">
+    function init() {
+      wshi();
+      wshello();
+    }
+    function wshi() {
+      var websocket = new WebSocket("ws://localhost:9000/sample/eventSearch/hi/");
+      websocket.onopen = function() {websocket.send("Hi")};
+      websocket.onmessage = function(evt) {writeMessage(evt.data)};
+    }
+    function wshello() {
+      var websocket = new WebSocket("ws://localhost:9000/sample/eventSearch/hello/");
+      websocket.onopen = function() {websocket.send("Reactive")};
+      websocket.onmessage = function(evt) {writeMessage(evt.data)};
+    }
+    function writeMessage(msg) {
+      var h2 = document.createElement("h2");
+      h2.innerText = msg;
+      document.getElementById("output").appendChild(h2);
+    }
+    window.addEventListener("load", init, false);
+  </script>
+
+  @helper.form(action = controllers.sample.routes.EventSearch.search1(), 'role -> "form", 'class -> "form-horizontal"){
+    <div class="container">
+      <fieldset>
+        <legend>EventSearch</legend>
+        <div align = "right">
+          <a href="@controllers.sample.routes.EventSearch.search1()" class="btn btn-info">Search1</a>
+          <a href="@controllers.sample.routes.EventSearch.search2()" class="btn btn-info">Search2</a>
+          <a href="@controllers.sample.routes.EventSearch.ws()" class="btn btn-info">Example Domain</a>
+        </div>
+      </fieldset>
+
+      @if(events) {
+      <fieldset>
+        <legend>results</legend>
+        <div class="table-responsive">
+        <table class="table table-striped table-hover table-condensed">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>eventId</th>
+              <th>eventNm</th>
+              <th>eventDate</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for((event) <- events){
+              <tr>
+                <td>@event.id</td>
+                <td>@event.eventId</td>
+                <td>@event.eventNm</td>
+                <td>@event.eventDate</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      </fieldset>
+      }
+      <div id="output"></div>
+    </div>
+  }
+}
